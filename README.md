@@ -46,13 +46,6 @@ This repository will be regularly updated with:
 ## 📬 Contributions
 
 Pull requests are welcome if you'd like to contribute clean and well-documented bare-metal drivers for other peripherals.
-
-## 📄 License
-
-[MIT License](LICENSE)
-
 ---
 
 Feel free to fork, star ⭐ and follow the repo for updates!
-
-
