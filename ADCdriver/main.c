@@ -25,7 +25,7 @@ void ADC1(){
 }
 
 void delay(){
-	for(uint32_t i=0;uint32_t i<3000000;i++);
+	for(uint32_t i=0;uint32_t i<3000;i++);
 }
 
 int main(void){
