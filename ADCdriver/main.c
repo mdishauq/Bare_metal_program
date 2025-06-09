@@ -20,9 +20,9 @@ void ADC1(){
 	*AHB1ENR |=(1<<0);//enabling gpio pin pa1(adc1_1)
 	*APB2ENR |=(1<<8);//adc1 enabling
 	*MODER|=(1<<3)|(1<<2);//gpio pa1 mode to adc
-	*ADC_CR2&=(0>>0);//clearing the register before reseting
+	*ADC_CR2 &=~ (0>>0);//clearing the register before reseting
 	*ADC_SQR3 |=1;//selecting the channel(channel 1) before we ON adc
-	*ADC_CR2|=(1>>0);//seting the adc ON
+	*ADC_CR2|=(1<<0);//seting the adc ON
 }
 
 void delay(){
