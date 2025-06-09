@@ -1,0 +1,77 @@
+# STM32 Bare-Metal External Interrupt on Push Button (PC13)
+
+## Description
+
+This project demonstrates how to configure an external interrupt on **GPIOC Pin 13** (commonly connected to a user push button on many STM32 boards) using **bare-metal** (register-level) programming without using any HAL or CMSIS libraries.
+
+The program sets up **falling edge detection** on PC13 and triggers an interrupt when the button is pressed. Upon interrupt, a message is printed using `printf()`.
+
+## Features
+
+- Configures GPIOC Pin 13 as external interrupt source
+- Sets falling edge trigger
+- Enables interrupt masking and NVIC IRQ
+- Handles interrupt in `EXTI15_10_IRQHandler()`
+- Uses `printf()` to indicate button press
+
+## Target MCU
+
+- STM32F4 Series (e.g., STM32F401, STM32F103, STM32F407)
+
+## Register Configuration Summary
+
+| Register               | Purpose                                      |
+|------------------------|----------------------------------------------|
+| `RCC_AHB1ENR`          | Enables GPIOC clock                          |
+| `RCC_APB2ENR`          | Enables SYSCFG clock                         |
+| `SYSCFG_EXTICR4`       | Maps GPIOC Pin 13 to EXTI13                  |
+| `EXTI_FTSR`            | Configures falling edge trigger on EXTI13    |
+| `EXTI_IMR`             | Unmasks interrupt line for EXTI13            |
+| `NVIC_ISER1`           | Enables interrupt in NVIC (IRQn 40)          |
+| `EXTI_PR`              | Clears pending interrupt flag for EXTI13     |
+
+## Code Explanation
+
+- `*AHB1ENR |= (1 << 2);`  
+  Enables GPIOC port clock.
+
+- `*APB2ENR |= (1 << 14);`  
+  Enables SYSCFG controller (used to configure EXTI lines).
+
+- `*SYSCFG_EXTICR4 |= (1 << 5);`  
+  Maps PC13 to EXTI13 (SYSCFG EXTICR4 controls lines 12–15).  
+  > Note: Bit shifting here should be double-checked depending on EXTI13's position.
+
+- `*EXTI_FTSR |= (1 << 13);`  
+  Sets falling edge trigger for EXTI13.
+
+- `*EXTI_IMR |= (1 << 13);`  
+  Unmasks interrupt line 13.
+
+- `*NVIC_ISER1 |= (1 << 8);`  
+  Enables interrupt #40 (EXTI15_10) in NVIC.  
+  NVIC interrupt #40 = 8th bit in `NVIC_ISER1`.
+
+- `EXTI15_10_IRQHandler()`  
+  This is the interrupt handler for EXTI lines 10 to 15. Clears the pending bit and prints a message.
+
+## Notes
+
+- Make sure `printf()` is redirected to UART (USART2 or similar) to view output.
+- PC13 is often pulled-up internally, so pressing a button connects it to GND (falling edge).
+- Ensure you debounce in hardware or software if required.
+
+## Build and Flash
+
+You can build this code using:
+- **STM32CubeIDE**
+- **arm-none-eabi-gcc** with linker script and startup file
+- Flash using **ST-Link**, **OpenOCD**, or similar
+
+## Author
+
+[S. Mohamed Ishauq]
+
+## License
+
+MIT License
