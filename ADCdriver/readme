@@ -1,0 +1,67 @@
+# STM32 Bare-Metal ADC (Analog-to-Digital Conversion) using GPIOA Pin PA1
+
+## Description
+
+This project demonstrates how to read analog input values using the ADC (Analog-to-Digital Converter) of the STM32 microcontroller in a **bare-metal** (register-level) programming environment. It uses **GPIOA Pin PA1 (ADC1_IN1)** as the analog input channel and prints the converted digital value over UART (via `printf`, assumed to be redirected properly).
+
+## Features
+
+- Uses direct register access (bare-metal, no HAL/LL libraries)
+- Initializes and configures ADC1
+- Sets GPIOA Pin PA1 to analog mode
+- Continuously reads analog values
+- Outputs ADC values through UART (via `printf`)
+
+## Target MCU
+
+- STM32F4 Series (e.g., STM32F401, STM32F407)
+
+## Register Configuration Summary
+
+| Register       | Purpose                             |
+|----------------|-------------------------------------|
+| `RCC_AHB1ENR`  | Enables GPIOA clock                 |
+| `RCC_APB2ENR`  | Enables ADC1 clock                  |
+| `GPIOA_MODER`  | Sets PA1 to analog mode             |
+| `ADC_CR2`      | Controls ADC operation              |
+| `ADC_SQR3`     | Selects input channel (ADC1_IN1)    |
+| `ADC_SR`       | ADC status (End of Conversion) flag |
+| `ADC_DR`       | Holds converted digital value       |
+
+## Code Explanation
+
+- `*AHB1ENR |= (1 << 0);`  
+  Enables GPIOA peripheral.
+
+- `*APB2ENR |= (1 << 8);`  
+  Enables ADC1 peripheral.
+
+- `*MODER |= (1 << 3) | (1 << 2);`  
+  Configures GPIOA pin PA1 as analog mode.
+
+- `*ADC_CR2 &=~ (0 >> 0);`  
+  Clears ADC control register.
+
+- `*ADC_SQR3 |= 1;`  
+  Selects ADC channel 1.
+
+- `*ADC_CR2 |= (1 << 0);`  
+  Turns on ADC1.
+
+- Main loop triggers conversion, waits for EOC flag, reads ADC value, and prints.
+
+
+## Build and Flash
+
+You can compile and flash this code using:
+- **STM32CubeIDE**
+- **arm-none-eabi-gcc** and **OpenOCD**
+- Or any STM32 compatible toolchain
+
+## Author
+
+[S. Mohamed Ishauq]
+
+## License
+
+MIT License
