@@ -2,14 +2,15 @@
 #include<stdio.h>
 
 //registers used
-uint32_t *AHB1ENR=(uint32_t*)0x40023830;
-uint32_t *APB2ENR=(uint32_t*)0x40023844;
-uint32_t *MODER=(uint32_t*)0x40020000;
-uint32_t *ADC_CR2=(uint32_t*)0x40012008;
-uint32_t *ADC_SQR3=(uint32_t*)0x40012034;
-uint32_t *ADC_SR=(uint32_t*)0x40012000;
-uint32_t *ADC_DR=(uint32_t*)0x4001204c;
+uint32_t volatile *AHB1ENR=(uint32_t*)0x40023830;
+uint32_t volatile *APB2ENR=(uint32_t*)0x40023844;
+uint32_t volatile *MODER=(uint32_t*)0x40020000;
+uint32_t volatile *ADC_CR2=(uint32_t*)0x40012008;
+uint32_t volatile *ADC_SQR3=(uint32_t*)0x40012034;
+uint32_t volatile *ADC_SR=(uint32_t*)0x40012000;
+uint32_t volatile *ADC_DR=(uint32_t*)0x4001204c;
 uint16_t analogvalue;
+
 
 
 void ADC1();
